@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        body {
+            transition: background 0.5s ease-in-out;
+        }
+        .dark-mode {
+            background-color: #121212 !important;
+            color: #ffffff !important;
+        }
+        .container-box {
+            max-width: 400px;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            transition: background 0.5s ease-in-out, color 0.5s ease-in-out;
+        }
+        .dark-mode .container-box {
+            background-color: #222;
+            color: #fff;
+        }
+        .message-box {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="d-flex flex-column justify-content-center align-items-center vh-100 bg-light">
+    <button onclick="toggleDarkMode()" class="btn btn-outline-secondary position-absolute top-0 end-0 m-3">
+        🌙 Toggle Dark Mode
+    </button>
+
+    <div class="container-box text-center">
+        <h1 class="mb-3">🎯 Guess the Number (1-100)</h1>
+
+        {% if message %}
+            <div class="alert {% if 'CONGRATULATIONS' in message %}alert-success{% else %}alert-warning{% endif %} message-box">
+                {{ message }}
+            </div>
+        {% endif %}
+        <form action="{% url 'guess' %}" method="post" class="mb-3">
+            {% csrf_token %}
+            <div class="input-group">
+                <input type="number" name="guess" class="form-control" placeholder="Enter your guess" required>
+                <button type="submit" class="btn btn-primary">Guess</button>
+            </div>
+        </form>
+        <a href="{% url 'index' %}" class="btn btn-danger">🔄 Reset Game</a>
+    </div>
+    <script>
+        function toggleDarkMode() {
+            document.body.classList.toggle("dark-mode");
+        }
+    </script>
+</body>
+</html>
